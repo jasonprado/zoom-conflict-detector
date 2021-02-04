@@ -1,0 +1,15 @@
+# Configuration for an OpenFAAS function. Deploy like this:
+# > faas-cli secret create conflictdetector-keys --from-file=.env
+# > faas-cli publish -f conflictdetector.yml --platforms linux/arm/v7,linux/amd64
+# > faas-cli deploy -f conflictdetector.yml
+
+version: 1.0
+provider:
+  name: openfaas
+functions:
+  conflictdetector:
+    lang: python3
+    handler: ./conflictdetector
+    image: jasonprado/conflictdetector:latest
+    secrets:
+      - conflictdetector-keys
