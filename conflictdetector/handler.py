@@ -8,5 +8,6 @@ def handle(req):
     zoom_api_key=config['ZOOM_API_KEY'],
     zoom_api_secret=config['ZOOM_API_SECRET'],
     webhook_url=config['WEBHOOK_URL'],
+    timezone=config['TIMEZONE'],
   )
   return '{"status":"ok"}'

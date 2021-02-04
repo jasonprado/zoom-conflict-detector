@@ -13,8 +13,7 @@ import json
 import requests
 import os
 from zoomus import ZoomClient
-
-from pprint import pprint
+from dateutil import tz
 
 Meeting = collections.namedtuple('Meeting', ['id', 'title', 'start_time', 'end_time'])
 
@@ -57,7 +56,8 @@ def report_conflict(webhook_url, report_string):
       )
 
 
-def run(zoom_api_key, zoom_api_secret, webhook_url):
+def run(zoom_api_key, zoom_api_secret, webhook_url, timezone):
+  timezone = tz.gettz(timezone)
   client = ZoomClient(zoom_api_key, zoom_api_secret)
 
   user_list_response = client.user.list()
@@ -73,11 +73,11 @@ def run(zoom_api_key, zoom_api_secret, webhook_url):
       for conflict in conflicts:
         report = f'Conflict detected on account {user["email"]}\n'
         (meeting_1, meeting_2) = conflict
-        time_format = "%m/%d/%Y, %H:%M:%S"
-        meeting_1_start = meeting_1.start_time.strftime(time_format)
-        meeting_1_end = meeting_1.end_time.strftime(time_format)
-        meeting_2_start = meeting_2.start_time.strftime(time_format)
-        meeting_2_end = meeting_2.end_time.strftime(time_format)
+        time_format = "%m/%d/%Y, %I:%M:%S %p"
+        meeting_1_start = meeting_1.start_time.astimezone(timezone).strftime(time_format)
+        meeting_1_end = meeting_1.end_time.astimezone(timezone).strftime(time_format)
+        meeting_2_start = meeting_2.start_time.astimezone(timezone).strftime(time_format)
+        meeting_2_end = meeting_2.end_time.astimezone(timezone).strftime(time_format)
 
         report += f'{meeting_1.title}: {meeting_1_start} - {meeting_1_end}\n'
         report += f'{meeting_2.title}: {meeting_2_start} - {meeting_2_end}\n'
@@ -93,6 +93,7 @@ def main():
     zoom_api_key=os.getenv('ZOOM_API_KEY'),
     zoom_api_secret=os.getenv('ZOOM_API_SECRET'),
     webhook_url=os.getenv('WEBHOOK_URL'),
+    timezone=os.getenv('TIMEZONE'),
   )
 
 if __name__ == '__main__':
