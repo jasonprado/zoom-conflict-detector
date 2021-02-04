@@ -10,6 +10,9 @@ functions:
   conflictdetector:
     lang: python3
     handler: ./conflictdetector
-    image: jasonprado/conflictdetector:latest
+    image: ${DOCKER_USER:-jasonprado}/conflictdetector:latest
+    annotations:
+      topic: cron-function
+      schedule: "@hourly"
     secrets:
       - conflictdetector-keys

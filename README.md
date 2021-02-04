@@ -13,8 +13,9 @@ meetings. This script will find and report them to a Slack-style webhook.
 Assuming you have `faas-cli` and `kubectl` configured and working.
 * `faas-cli secret create conflictdetector-keys --from-file=.env`
 * `faas-cli deploy -f conflictdetector.yml`
+* If `cron-connector` is installed, the function will execute hourly.
 
 ### Build your own image
-* Edit `conflictdetector.yml` and update the `image` field to your container registry.
+* `export DOCKER_USER=<your docker.io username>`
 * `faas-cli publish -f conflictdetector.yml --platforms linux/arm/v7,linux/amd64`
 * `faas-cli deploy -f conflictdetector.yml`
