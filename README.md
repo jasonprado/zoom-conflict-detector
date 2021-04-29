@@ -12,10 +12,10 @@ meetings. This script will find and report them to a Slack-style webhook.
 ### Run automatically in OpenFAAS and Kubernetes
 Assuming you have `faas-cli` and `kubectl` configured and working.
 * `faas-cli secret create conflictdetector-keys --from-file=.env`
-* `faas-cli deploy -f conflictdetector.yml`
+* `faas-cli deploy -f stack.yml`
 * If `cron-connector` is installed, the function will execute hourly.
 
 ### Build your own image
 * `export DOCKER_USER=<your docker.io username>`
-* `faas-cli publish -f conflictdetector.yml --platforms linux/arm/v7,linux/amd64`
-* `faas-cli deploy -f conflictdetector.yml`
+* `faas-cli publish -f stack.yml --platforms linux/arm/v7,linux/amd64`
+* `faas-cli deploy -f stack.yml`
