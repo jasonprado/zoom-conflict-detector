@@ -65,7 +65,7 @@ def run(zoom_api_key, zoom_api_secret, webhook_url, timezone):
 
   for user in user_list['users']:
     user_id = user['id']
-    meetings = json.loads(client.meeting.list(user_id=user_id, type='upcoming').content)['meetings']
+    meetings = json.loads(client.meeting.list(user_id=user_id, type='upcoming', page_size=300).content)['meetings']
 
     conflicts = determine_conflicts(meetings)
 
